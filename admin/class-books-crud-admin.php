@@ -63,7 +63,7 @@ class Books_Crud_Admin {
 	}
 
 	public function bc_register_books_crud_meta_boxes() {
-		add_meta_box( 'bc_book_author', __( 'Author', 'books-crud' ), array( $this,'bc_render_book_author_callback' ), 'cpt_book' );
+		add_meta_box( 'bc_book_author', __( 'Book Information', 'books-crud' ), array( $this,'bc_render_book_meta_boxes_callback' ), 'cpt_book' );
 	}
 
 	/**
@@ -71,8 +71,8 @@ class Books_Crud_Admin {
 	 *
 	 * @param WP_Post $post Current post object.
 	 */
-	public function bc_render_book_author_callback( $post ) {
-		include BOOKS_CRUD_PLUGIN_DIR . 'admin/meta-boxes/book-author.php';
+	public function bc_render_book_meta_boxes_callback( $post ) {
+		include BOOKS_CRUD_PLUGIN_DIR . 'admin/meta-boxes/book-info.php';
 	}
 
 	public function bc_save_books_crud_meta_boxes( $post_id ) {
@@ -89,6 +89,14 @@ class Books_Crud_Admin {
 				$post_id,
 				'_bc_author_last_name',
 				$_POST['bc-author-last-name']
+			);
+		}
+
+		if ( array_key_exists( 'bc-book-description', $_POST ) ) {
+			update_post_meta(
+				$post_id,
+				'_bc_book_description',
+				$_POST['bc-book-description']
 			);
 		}
 	}
