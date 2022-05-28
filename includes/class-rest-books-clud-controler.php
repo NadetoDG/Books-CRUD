@@ -27,6 +27,12 @@ class WP_REST_Books_CRUD_Controller extends WP_REST_Controller {
 			'methods'  => 'POST',
 			'callback' => array( $this, 'bc_api_create_book_callback' ),
 		) );
+
+		//Update book
+		register_rest_route( $namespace, $base . '/update/(?P<book_id>\d+)', array(
+			'methods'  => 'PUT',
+			'callback' => array( $this, 'bc_api_update_book_callback' ),
+		) );
 	}
 
 	/**
@@ -112,8 +118,70 @@ class WP_REST_Books_CRUD_Controller extends WP_REST_Controller {
 		}
 	}
 
+	/**
+	 * Create books from Wordpress.
+	 *
+	 * @param object
+	 * @return object
+	 */
+	function bc_api_update_book_callback( $request ) {
+		$book_id = $request->get_param( 'book_id' );
 
-	public function validate( $request ) {
+		if ( ! $this->bc_check_is_book( $book_id ) ) {
+			$errors = new WP_Error( 'invalid_book_id', __( 'Invalid book id.' ), 400 );
+			return $errors;
+		}
+
+		$book_attrs = [
+			'ID' => $book_id,
+		];
+
+		if ( isset( $request['title'] ) && ! empty( $request['title'] ) ) {
+			$book_attrs['post_title'] = $request['title'];
+		}
+
+		if ( isset( $request['description'] ) && ! empty( $request['description'] ) ) {
+			$book_attrs['meta_input']['_bc_book_description'] = $request['description'];
+		}
+
+		if ( isset( $request['author_first_name'] ) && ! empty( $request['author_first_name'] ) ) {
+			$book_attrs['meta_input']['_bc_author_first_name'] = $request['author_first_name'];
+		}
+
+		if ( isset( $request['author_last_name'] ) && ! empty( $request['author_last_name'] ) ) {
+			$book_attrs['meta_input']['_bc_author_last_name'] = $request['author_last_name'];
+		}
+
+		if ( isset( $request['genre'] ) && ! empty( $request['genre'] ) ) {
+			$genre_entries = explode( ',', $request['genre'] );
+
+			$book_genre_names = [];
+
+			foreach ( $genre_entries as $entry ) {
+				$genre_name_term = term_exists( $entry, 'tax_genre', 0 );
+
+				if ( ! $genre_name_term ) {
+					$genre_name_term = wp_insert_term( $entry, 'tax_genre', array( 'parent' => 0 ) );
+				}
+
+				$book_genre_names[] = get_term( $genre_name_term['term_taxonomy_id'] )->name;
+			}
+
+			wp_set_post_terms( $book_id, $book_genre_names, 'tax_genre' );
+		}
+
+		$update_book = wp_update_post( $book_attrs );
+
+		if ( is_wp_error( $update_book ) ) {
+			$errors = new WP_Error( 'error_new_book', __( "The new book wasn't updated." ), 400 );
+			return $errors;
+		} else {
+			return new WP_Rest_Response( 'The book with id ' . $book_id . ' was updated.', 200 );
+		}
+	}
+
+
+	function validate( $request ) {
 		$errors = new WP_Error( 'invalid_data', __( 'Please, fix the following errors and try again' ), 400 );
 		$is_valid = true;
 
@@ -164,5 +232,9 @@ class WP_REST_Books_CRUD_Controller extends WP_REST_Controller {
 		}
 
 		return true;
+	}
+
+	function bc_check_is_book( $post_id ) {
+		return get_post_type( $post_id ) === 'cpt_book';
 	}
 }
