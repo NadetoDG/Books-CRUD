@@ -1,8 +1,4 @@
 <?php
-use WP_Rest_Response;
-use WP_Error;
-use WP_Query;
-
 class WP_REST_Books_CRUD_Controller extends WP_REST_Controller {
 	/**
 	 * Registers Controller Routes.
@@ -20,24 +16,28 @@ class WP_REST_Books_CRUD_Controller extends WP_REST_Controller {
 		register_rest_route( $namespace, $base, array(
 			'methods'  => 'GET',
 			'callback' => array( $this, 'bc_api_get_books_callback' ),
+			'permission_callback' => '__return_true',
 		) );
 
 		//Create books
 		register_rest_route( $namespace, $base . '/create/', array(
 			'methods'  => 'POST',
 			'callback' => array( $this, 'bc_api_create_book_callback' ),
+			'permission_callback' => '__return_true',
 		) );
 
 		//Update book
 		register_rest_route( $namespace, $base . '/update/(?P<book_id>\d+)', array(
 			'methods'  => 'PUT',
 			'callback' => array( $this, 'bc_api_update_book_callback' ),
+			'permission_callback' => '__return_true',
 		) );
 
 		//Update book
 		register_rest_route( $namespace, $base . '/delete/(?P<book_id>\d+)', array(
 			'methods'  => 'DELETE',
 			'callback' => array( $this, 'bc_api_delete_book_callback' ),
+			'permission_callback' => '__return_true',
 		) );
 	}
 
