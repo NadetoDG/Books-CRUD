@@ -23,8 +23,10 @@ register_post_type( 'cpt_book', array(
 		'slug'       => 'book',
 		'with_front' => false,
 	),
-	'query_var'           => true,
-	'menu_icon'           => 'dashicons-book-alt',
-	'supports'            => array( 'title', 'editor', 'page-attributes' ),
+	'query_var'             => true,
+	'menu_icon'             => 'dashicons-book-alt',
+	'rest_base'             => 'bc_books',
+	'rest_controller_class' => 'WP_REST_Books_CRUD_Controller',
+	'supports'              => array( 'title', 'editor', 'page-attributes' ),
 ) );
 

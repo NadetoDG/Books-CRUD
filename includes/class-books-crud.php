@@ -103,6 +103,11 @@ class Books_Crud {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-books-crud-loader.php';
 
 		/**
+		 * The class responsible for rest api controller.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-rest-books-clud-controler.php';
+
+		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-books-crud-admin.php';
@@ -113,8 +118,8 @@ class Books_Crud {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-books-crud-public.php';
 
-		$this->loader = new Books_Crud_Loader();
 
+		$this->loader = new Books_Crud_Loader();
 	}
 
 	/**

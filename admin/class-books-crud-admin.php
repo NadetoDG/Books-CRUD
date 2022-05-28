@@ -72,24 +72,24 @@ class Books_Crud_Admin {
 	 * @param WP_Post $post Current post object.
 	 */
 	public function bc_render_book_author_callback( $post ) {
-	    include BOOKS_CRUD_PLUGIN_DIR . 'admin/meta-boxes/book-author.php';
+		include BOOKS_CRUD_PLUGIN_DIR . 'admin/meta-boxes/book-author.php';
 	}
 
 	public function bc_save_books_crud_meta_boxes( $post_id ) {
 		if ( array_key_exists( 'bc-author-first-name', $_POST ) ) {
-	        update_post_meta(
-	            $post_id,
-	            '_bc_author_first_name',
-	            $_POST['bc-author-first-name']
-	        );
-   		}
+			update_post_meta(
+				$post_id,
+				'_bc_author_first_name',
+				$_POST['bc-author-first-name']
+			);
+		}
 
-   		if ( array_key_exists( 'bc-author-last-name', $_POST ) ) {
-	        update_post_meta(
-	            $post_id,
-	            '_bc_author_last_name',
-	            $_POST['bc-author-last-name']
-	        );
-   		}
+		if ( array_key_exists( 'bc-author-last-name', $_POST ) ) {
+			update_post_meta(
+				$post_id,
+				'_bc_author_last_name',
+				$_POST['bc-author-last-name']
+			);
+		}
 	}
 }
