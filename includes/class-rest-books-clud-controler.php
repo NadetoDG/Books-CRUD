@@ -33,6 +33,12 @@ class WP_REST_Books_CRUD_Controller extends WP_REST_Controller {
 			'methods'  => 'PUT',
 			'callback' => array( $this, 'bc_api_update_book_callback' ),
 		) );
+
+		//Update book
+		register_rest_route( $namespace, $base . '/delete/(?P<book_id>\d+)', array(
+			'methods'  => 'DELETE',
+			'callback' => array( $this, 'bc_api_delete_book_callback' ),
+		) );
 	}
 
 	/**
@@ -119,7 +125,7 @@ class WP_REST_Books_CRUD_Controller extends WP_REST_Controller {
 	}
 
 	/**
-	 * Create books from Wordpress.
+	 * Update books from Wordpress.
 	 *
 	 * @param object
 	 * @return object
@@ -177,6 +183,30 @@ class WP_REST_Books_CRUD_Controller extends WP_REST_Controller {
 			return $errors;
 		} else {
 			return new WP_Rest_Response( 'The book with id ' . $book_id . ' was updated.', 200 );
+		}
+	}
+
+	/**
+	 * Delete books from Wordpress.
+	 *
+	 * @param object
+	 * @return object
+	 */
+	function bc_api_delete_book_callback( $request ) {
+		$book_id = $request->get_param( 'book_id' );
+
+		if ( ! $this->bc_check_is_book( $book_id ) ) {
+			$errors = new WP_Error( 'invalid_book_id', __( 'Invalid book id.' ), 400 );
+			return $errors;
+		}
+
+		$delete_book = wp_delete_post( $book_id );
+
+		if ( is_wp_error( $delete_book ) ) {
+			$errors = new WP_Error( 'error_new_book', __( "The new book wasn't deleted." ), 400 );
+			return $errors;
+		} else {
+			return new WP_Rest_Response( 'The book with id ' . $book_id . ' was deleted.', 200 );
 		}
 	}
 
