@@ -100,7 +100,7 @@ class WP_REST_Books_CRUD_Controller extends WP_REST_Controller {
 		$new_book = wp_insert_post( $book_attrs );
 
 		if ( is_wp_error( $new_book ) ) {
-			$errors = new WP_Error( 'error_new_book', __( "The new book wasn't created." ), 400 );
+			$errors = new WP_Error( 'error_new_book', __( "The new book wasn't created.", 'books-crud' ), 400 );
 			return $errors;
 		} else {
 			$genre_entries = explode( ',', $request['genre'] );
@@ -133,7 +133,7 @@ class WP_REST_Books_CRUD_Controller extends WP_REST_Controller {
 		$book_id = $request->get_param( 'book_id' );
 
 		if ( ! $this->bc_check_is_book( $book_id ) ) {
-			$errors = new WP_Error( 'invalid_book_id', __( 'Invalid book id.' ), 400 );
+			$errors = new WP_Error( 'invalid_book_id', __( 'Invalid book id.', 'books-crud' ), 400 );
 			return $errors;
 		}
 
@@ -178,7 +178,7 @@ class WP_REST_Books_CRUD_Controller extends WP_REST_Controller {
 		$update_book = wp_update_post( $book_attrs );
 
 		if ( is_wp_error( $update_book ) ) {
-			$errors = new WP_Error( 'error_new_book', __( "The new book wasn't updated." ), 400 );
+			$errors = new WP_Error( 'error_new_book', __( "The new book wasn't updated.", 'books-crud' ), 400 );
 			return $errors;
 		} else {
 			return new WP_Rest_Response( 'The book with id ' . $book_id . ' was updated.', 200 );
@@ -195,14 +195,14 @@ class WP_REST_Books_CRUD_Controller extends WP_REST_Controller {
 		$book_id = $request->get_param( 'book_id' );
 
 		if ( ! $this->bc_check_is_book( $book_id ) ) {
-			$errors = new WP_Error( 'invalid_book_id', __( 'Invalid book id.' ), 400 );
+			$errors = new WP_Error( 'invalid_book_id', __( 'Invalid book id.', 'books-crud' ), 400 );
 			return $errors;
 		}
 
 		$delete_book = wp_delete_post( $book_id );
 
 		if ( is_wp_error( $delete_book ) ) {
-			$errors = new WP_Error( 'error_new_book', __( "The new book wasn't deleted." ), 400 );
+			$errors = new WP_Error( 'error_new_book', __( "The new book wasn't deleted.", 'books-crud' ), 400 );
 			return $errors;
 		} else {
 			return new WP_Rest_Response( 'The book with id ' . $book_id . ' was deleted.', 200 );
@@ -211,14 +211,14 @@ class WP_REST_Books_CRUD_Controller extends WP_REST_Controller {
 
 
 	function validate( $request ) {
-		$errors = new WP_Error( 'invalid_data', __( 'Please, fix the following errors and try again' ), 400 );
+		$errors = new WP_Error( 'invalid_data', __( 'Please, fix the following errors and try again', 'books-crud' ), 400 );
 		$is_valid = true;
 
 		if ( empty( $request['title'] ) ) {
 			$is_valid = false;
 			$errors->add(
 				'empty_title',
-				__( 'No book title set.', 'crb' )
+				__( 'No book title set.', 'books-crud' )
 			);
 		}
 
@@ -226,7 +226,7 @@ class WP_REST_Books_CRUD_Controller extends WP_REST_Controller {
 			$is_valid = false;
 			$errors->add(
 				'empty_description',
-				__( 'No book description set.', 'crb' )
+				__( 'No book description set.', 'books-crud' )
 			);
 		}
 
@@ -234,7 +234,7 @@ class WP_REST_Books_CRUD_Controller extends WP_REST_Controller {
 			$is_valid = false;
 			$errors->add(
 				'empty_genre',
-				__( 'No book genre set.', 'crb' )
+				__( 'No book genre set.', 'books-crud' )
 			);
 		}
 
@@ -242,7 +242,7 @@ class WP_REST_Books_CRUD_Controller extends WP_REST_Controller {
 			$is_valid = false;
 			$errors->add(
 				'empty_author_first_name',
-				__( 'No book author first name set.', 'crb' )
+				__( 'No book author first name set.', 'books-crud' )
 			);
 		}
 
@@ -250,7 +250,7 @@ class WP_REST_Books_CRUD_Controller extends WP_REST_Controller {
 			$is_valid = false;
 			$errors->add(
 				'empty_author_last_name',
-				__( 'No book author last name set.', 'crb' )
+				__( 'No book author last name set.', 'books-crud' )
 			);
 		}
 
