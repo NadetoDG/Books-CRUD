@@ -48,24 +48,23 @@ class WP_REST_Books_CRUD_Controller extends WP_REST_Controller {
 	 * @return object
 	 */
 	function bc_api_get_books_callback( $request ) {
-		$books = get_posts([
+		$books_query = new WP_Query([
 			'post_type' => 'cpt_book',
 		]);
-		wp_reset_postdata();
 
 		$response = [];
 
-		if ( count( $books ) > 0 ) {
-			foreach ( $books as $book ) {
+		if ( $books_query->have_posts() ) {
+			foreach ( $books_query->posts as $book ) {
 				$genre = wp_get_post_terms( $book->ID, 'tax_genre', array( 'fields' => 'names' ) );
 
 				$response[] = [
 					'title'       => $book->post_title,
-					'description' => get_post_meta( $book->ID, '_bc_book_description' ),
+					'description' => get_post_meta( $book->ID, '_bc_book_description', true ),
 					'genre'       => $genre,
 					'author' => [
-						'first_name' => get_post_meta( $book->ID, '_bc_author_first_name' ),
-						'last_name'  => get_post_meta( $book->ID, '_bc_author_last_name' ),
+						'first_name' => get_post_meta( $book->ID, '_bc_author_first_name', true ),
+						'last_name'  => get_post_meta( $book->ID, '_bc_author_last_name', true ),
 					]
 				];
 			}
