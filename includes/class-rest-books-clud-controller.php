@@ -140,6 +140,8 @@ class WP_REST_Books_CRUD_Controller extends WP_REST_Controller {
 			'ID' => $book_id,
 		];
 
+		$request = $request->get_json_params();
+
 		if ( ! empty( $request['title'] ) ) {
 			$book_attrs['post_title'] = $request['title'];
 		}
@@ -210,8 +212,10 @@ class WP_REST_Books_CRUD_Controller extends WP_REST_Controller {
 
 
 	function validate( $request ) {
-		$errors = new WP_Error( 'invalid_data', __( 'Please, fix the following errors and try again', 'books-crud' ), 400 );
+		$errors   = new WP_Error( 'invalid_data', __( 'Please, fix the following errors and try again', 'books-crud' ), 400 );
 		$is_valid = true;
+
+		$request = $request->get_json_params();
 
 		if ( empty( $request['title'] ) ) {
 			$is_valid = false;
