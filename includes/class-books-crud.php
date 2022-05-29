@@ -62,7 +62,7 @@ class Books_Crud {
 		/**
 		 * The class responsible for rest api controller.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-rest-books-clud-controler.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-rest-books-clud-controller.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
