@@ -14,28 +14,28 @@ class WP_REST_Books_CRUD_Controller extends WP_REST_Controller {
 		//Get books
 		register_rest_route( $namespace, $base, array(
 			'methods'  => 'GET',
-			'callback' => array( $this, 'bc_api_get_books_callback' ),
+			'callback' => array( $this, 'get_books' ),
 			'permission_callback' => '__return_true',
 		) );
 
 		//Create books
 		register_rest_route( $namespace, $base . '/create/', array(
 			'methods'  => 'POST',
-			'callback' => array( $this, 'bc_api_create_book_callback' ),
+			'callback' => array( $this, 'create_book' ),
 			'permission_callback' => '__return_true',
 		) );
 
 		//Update book
 		register_rest_route( $namespace, $base . '/update/(?P<book_id>\d+)', array(
 			'methods'  => 'PUT',
-			'callback' => array( $this, 'bc_api_update_book_callback' ),
+			'callback' => array( $this, 'update_book' ),
 			'permission_callback' => '__return_true',
 		) );
 
 		//Update book
 		register_rest_route( $namespace, $base . '/delete/(?P<book_id>\d+)', array(
 			'methods'  => 'DELETE',
-			'callback' => array( $this, 'bc_api_delete_book_callback' ),
+			'callback' => array( $this, 'delete_book' ),
 			'permission_callback' => '__return_true',
 		) );
 	}
@@ -46,7 +46,7 @@ class WP_REST_Books_CRUD_Controller extends WP_REST_Controller {
 	 * @param object $request WP_Request with data
 	 * @return object WP_Rest_Response
 	 */
-	function bc_api_get_books_callback( $request ) {
+	function get_books( $request ) {
 		$books_query = new WP_Query([
 			'post_type' => 'cpt_book',
 		]);
@@ -78,7 +78,7 @@ class WP_REST_Books_CRUD_Controller extends WP_REST_Controller {
 	 * @param object
 	 * @return object
 	 */
-	function bc_api_create_book_callback( $request ) {
+	function create_book( $request ) {
 		$errors = $this->validate( $request );
 
 		if ( is_wp_error( $errors ) ) {
@@ -128,10 +128,10 @@ class WP_REST_Books_CRUD_Controller extends WP_REST_Controller {
 	 * @param object $request WP_Request with data
 	 * @return object WP_Rest_Response
 	 */
-	function bc_api_update_book_callback( $request ) {
+	function update_book( $request ) {
 		$book_id = $request->get_param( 'book_id' );
 
-		if ( ! $this->bc_check_is_book( $book_id ) ) {
+		if ( ! $this->is_book( $book_id ) ) {
 			$errors = new WP_Error( 'invalid_book_id', __( 'Invalid book id.', 'books-crud' ), 400 );
 			return $errors;
 		}
@@ -190,10 +190,10 @@ class WP_REST_Books_CRUD_Controller extends WP_REST_Controller {
 	 * @param object $request WP_Request with data
 	 * @return object WP_Rest_Response
 	 */
-	function bc_api_delete_book_callback( $request ) {
+	function delete_book( $request ) {
 		$book_id = $request->get_param( 'book_id' );
 
-		if ( ! $this->bc_check_is_book( $book_id ) ) {
+		if ( ! $this->is_book( $book_id ) ) {
 			$errors = new WP_Error( 'invalid_book_id', __( 'Invalid book id.', 'books-crud' ), 400 );
 			return $errors;
 		}
@@ -266,7 +266,7 @@ class WP_REST_Books_CRUD_Controller extends WP_REST_Controller {
 	 * @param int $post_id The id of the post.
 	 * @return true/false
 	 */
-	function bc_check_is_book( $post_id ) {
+	function is_book( $post_id ) {
 		return get_post_type( $post_id ) === 'cpt_book';
 	}
 }
