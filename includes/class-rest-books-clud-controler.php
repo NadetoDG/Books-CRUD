@@ -141,23 +141,23 @@ class WP_REST_Books_CRUD_Controller extends WP_REST_Controller {
 			'ID' => $book_id,
 		];
 
-		if ( isset( $request['title'] ) && ! empty( $request['title'] ) ) {
+		if ( ! empty( $request['title'] ) ) {
 			$book_attrs['post_title'] = $request['title'];
 		}
 
-		if ( isset( $request['description'] ) && ! empty( $request['description'] ) ) {
+		if ( ! empty( $request['description'] ) ) {
 			$book_attrs['meta_input']['_bc_book_description'] = $request['description'];
 		}
 
-		if ( isset( $request['author_first_name'] ) && ! empty( $request['author_first_name'] ) ) {
+		if ( ! empty( $request['author_first_name'] ) ) {
 			$book_attrs['meta_input']['_bc_author_first_name'] = $request['author_first_name'];
 		}
 
-		if ( isset( $request['author_last_name'] ) && ! empty( $request['author_last_name'] ) ) {
+		if ( ! empty( $request['author_last_name'] ) ) {
 			$book_attrs['meta_input']['_bc_author_last_name'] = $request['author_last_name'];
 		}
 
-		if ( isset( $request['genre'] ) && ! empty( $request['genre'] ) ) {
+		if ( ! empty( $request['genre'] ) ) {
 			$genre_entries = explode( ',', $request['genre'] );
 
 			$book_genre_names = [];
@@ -214,7 +214,7 @@ class WP_REST_Books_CRUD_Controller extends WP_REST_Controller {
 		$errors = new WP_Error( 'invalid_data', __( 'Please, fix the following errors and try again' ), 400 );
 		$is_valid = true;
 
-		if ( ! isset( $request['title'] ) || ( isset( $request['title'] ) && empty( $request['title'] ) ) ) {
+		if ( empty( $request['title'] ) ) {
 			$is_valid = false;
 			$errors->add(
 				'empty_title',
@@ -230,7 +230,7 @@ class WP_REST_Books_CRUD_Controller extends WP_REST_Controller {
 			);
 		}
 
-		if ( ! isset( $request['genre'] ) || ( isset( $request['genre'] ) && empty( $request['genre'] ) ) ) {
+		if ( empty( $request['genre'] ) ) {
 			$is_valid = false;
 			$errors->add(
 				'empty_genre',
@@ -238,7 +238,7 @@ class WP_REST_Books_CRUD_Controller extends WP_REST_Controller {
 			);
 		}
 
-		if ( ! isset( $request['author_first_name' ] ) || ( isset( $request['author_first_name' ] ) && empty( $request['author_first_name' ] ) ) ) {
+		if ( empty( $request['author_first_name' ] ) ) {
 			$is_valid = false;
 			$errors->add(
 				'empty_author_first_name',
@@ -246,7 +246,7 @@ class WP_REST_Books_CRUD_Controller extends WP_REST_Controller {
 			);
 		}
 
-		if ( ! isset( $request['author_last_name' ] ) || ( isset( $request['author_last_name' ] ) && empty( $request['author_last_name' ] ) ) ) {
+		if ( empty( $request['author_last_name' ] ) ) {
 			$is_valid = false;
 			$errors->add(
 				'empty_author_last_name',
