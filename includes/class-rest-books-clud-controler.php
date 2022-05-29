@@ -1,11 +1,10 @@
 <?php
+/**
+ * The wp rest books controller.
+ */
 class WP_REST_Books_CRUD_Controller extends WP_REST_Controller {
 	/**
 	 * Registers Controller Routes.
-	 *
-	 * @access public
-	 *
-	 * @return void
 	 */
 	public function register_routes() {
 		$version   = '1';
@@ -44,8 +43,8 @@ class WP_REST_Books_CRUD_Controller extends WP_REST_Controller {
 	/**
 	 * Get books from Wordpress.
 	 *
-	 * @param object
-	 * @return object
+	 * @param object $request WP_Request with data
+	 * @return object WP_Rest_Response
 	 */
 	function bc_api_get_books_callback( $request ) {
 		$books_query = new WP_Query([
@@ -126,8 +125,8 @@ class WP_REST_Books_CRUD_Controller extends WP_REST_Controller {
 	/**
 	 * Update books from Wordpress.
 	 *
-	 * @param object
-	 * @return object
+	 * @param object $request WP_Request with data
+	 * @return object WP_Rest_Response
 	 */
 	function bc_api_update_book_callback( $request ) {
 		$book_id = $request->get_param( 'book_id' );
@@ -188,8 +187,8 @@ class WP_REST_Books_CRUD_Controller extends WP_REST_Controller {
 	/**
 	 * Delete books from Wordpress.
 	 *
-	 * @param object
-	 * @return object
+	 * @param object $request WP_Request with data
+	 * @return object WP_Rest_Response
 	 */
 	function bc_api_delete_book_callback( $request ) {
 		$book_id = $request->get_param( 'book_id' );
@@ -254,8 +253,6 @@ class WP_REST_Books_CRUD_Controller extends WP_REST_Controller {
 			);
 		}
 
-		//Add validation if is needed.
-
 		if ( $is_valid === false ) {
 			return $errors;
 		}
@@ -263,6 +260,12 @@ class WP_REST_Books_CRUD_Controller extends WP_REST_Controller {
 		return true;
 	}
 
+	/**
+	 * Check if the prodived is a book post
+	 *
+	 * @param int $post_id The id of the post.
+	 * @return true/false
+	 */
 	function bc_check_is_book( $post_id ) {
 		return get_post_type( $post_id ) === 'cpt_book';
 	}

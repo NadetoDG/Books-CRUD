@@ -1,32 +1,13 @@
 <?php
-
 /**
  * The admin-specific functionality of the plugin.
- *
- * @link       www.examle.com
- * @since      1.0.0
- *
- * @package    Books_Crud
- * @subpackage Books_Crud/admin
  */
 
-/**
- * The admin-specific functionality of the plugin.
- *
- * Defines the plugin name, version, and two examples hooks for how to
- * enqueue the admin-specific stylesheet and JavaScript.
- *
- * @package    Books_Crud
- * @subpackage Books_Crud/admin
- * @author     ngeneva <nadetodg@gmail.com>
- */
 class Books_Crud_Admin {
 
 	/**
 	 * The ID of this plugin.
 	 *
-	 * @since    1.0.0
-	 * @access   private
 	 * @var      string    $plugin_name    The ID of this plugin.
 	 */
 	private $plugin_name;
@@ -34,8 +15,6 @@ class Books_Crud_Admin {
 	/**
 	 * The version of this plugin.
 	 *
-	 * @since    1.0.0
-	 * @access   private
 	 * @var      string    $version    The current version of this plugin.
 	 */
 	private $version;
@@ -43,7 +22,6 @@ class Books_Crud_Admin {
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @since    1.0.0
 	 * @param      string    $plugin_name       The name of this plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
@@ -54,6 +32,9 @@ class Books_Crud_Admin {
 
 	}
 
+	/**
+	 * Attach Custom Post Types and Custom Taxonomies.
+	 */
 	public function bc_attach_books_crud_post_type_and_taxonomies() {
 		# Attach Custom Post Types
 		include_once( BOOKS_CRUD_PLUGIN_DIR . 'options/post-type.php' );
@@ -62,6 +43,9 @@ class Books_Crud_Admin {
 		include_once( BOOKS_CRUD_PLUGIN_DIR . 'options/taxonomies.php' );
 	}
 
+	/**
+	 * Register Meta Boxes.
+	 */
 	public function bc_register_books_crud_meta_boxes() {
 		add_meta_box( 'bc_book_author', __( 'Book Information', 'books-crud' ), array( $this,'bc_render_book_meta_boxes_callback' ), 'cpt_book' );
 	}
@@ -75,6 +59,11 @@ class Books_Crud_Admin {
 		include BOOKS_CRUD_PLUGIN_DIR . 'admin/meta-boxes/book-info.php';
 	}
 
+	/**
+	 * Save Meta boxes.
+	 *
+	 * @param int $post_id The id of this post.
+	 */
 	public function bc_save_books_crud_meta_boxes( $post_id ) {
 		if ( array_key_exists( 'bc-author-first-name', $_POST ) ) {
 			update_post_meta(

@@ -3,6 +3,7 @@ $first_name_value  = get_post_meta( $post->ID, '_bc_author_first_name', true );
 $last_name_value   = get_post_meta( $post->ID, '_bc_author_last_name', true );
 $description_value = get_post_meta( $post->ID, '_bc_book_description', true );
 ?>
+
 <div class="section-book-crud-author">
 	<div class="section__body">
 	    <p class="meta-options">
